@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$translucent" "1"
+	"$basetexture" "gr_overviews/gm_flatgrass/gm_flatgrass"
+    "$no_fullbright" "1"
+    "$ignorez" "1"
+}

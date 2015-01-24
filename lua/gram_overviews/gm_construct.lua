@@ -8,6 +8,15 @@ local zones = {
 		pos_x = -7228,
 		pos_y = 6466,
 	},
+	
+	{
+		name = "The Nether", -- the corridor
+			Vector(-3000, -2570, -700), Vector(-1150, -2128, -120),
+		texture_id = Gram.OverviewTextureID_R("gm_construct", "_ug"),
+		scale = 10.8,
+		pos_x = -7228,
+		pos_y = 6466,
+	},
 	{
 		name = "The Nether",
 			Vector(-3000, -2570, -700), Vector(-1150, 130, -165),

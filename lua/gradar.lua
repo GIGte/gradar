@@ -86,9 +86,6 @@ obj_map.listener:Listen()
 
 obj_map.listener.OnBeaconCreated = function(self, handler_name, beacon_table)
 	if handler_name == "player" then
-		-- IMPORTANT:
-		-- LocalPlayer() is NULL at the time players are created
-		-- observed after the 15.03.09 update
 		if beacon_table.Entity == LocalPlayer() then
 			return
 		end
@@ -96,18 +93,6 @@ obj_map.listener.OnBeaconCreated = function(self, handler_name, beacon_table)
 	
 	self:GetMapObject():AppendBeacon(handler_name, beacon_table)
 end
-
--- TEMPORARY FIX
-hook.Add("InitPostEntity", "GRadar_LocalPlayerWA", function()
-	obj_map:ForEach(function(beacon)
-		if beacon.Player == LocalPlayer() then
-			return false
-		end
-	end)
-	
-	hook.Remove("InitPostEntity", "GRadar_LocalPlayerWA")
-end)
---for k,v in pairs(Gram.Handlers) do v:ReloadToListener(obj_map.listener) end
 
 
 ----------------------------------------------------------------------

@@ -137,7 +137,7 @@ function frame_tbl:OnMouseReleased()
     self:MouseCapture(false)
 end
 
-vgui.RegisterTable(frame_tbl, "DPanel")
+vgui.RegisterTable(frame_tbl, "EditablePanel")
 
 
 ----------------------------------------------------------------------
@@ -175,7 +175,7 @@ function cbutton_tbl:Paint(w, h)
 	surface.DrawLine(11+w-22,11,11,11+h-22)
 end
 
-vgui.RegisterTable(cbutton_tbl, "DPanel")
+vgui.RegisterTable(cbutton_tbl, "Panel")
 
 
 ----------------------------------------------------------------------
@@ -191,9 +191,24 @@ function numslider_tbl:Init()
     self.TextArea:SetWide(45)
     self.TextArea:SetNumeric(true)
     self.TextArea:SetValue("0")
-    self.TextArea.OnChange = function(textarea, value)
-        self:SetValue(tonumber(value))
+    self.TextArea:SetUpdateOnType(true)
+    self.TextArea.OnValueChange = function(textarea, value)
+    	value = tonumber(value)
+    	if value then
+        	self:SetValue(value)
+        end
     end
+    self.TextArea.OnLoseFocus = function(textarea)
+    	local value = tonumber(textarea:GetValue())
+    	if value then
+	    	local newval = math.Clamp(value, self:GetMin(), self:GetMax())
+	    	if value ~= newval then
+	    		textarea:SetText(tostring(newval))
+	    	end
+	    else
+	    	textarea:SetText(tostring(self:GetMin()))
+	    end
+	end
     
     self.Slider = self:Add("DSlider")
     self.Slider:SetLockY(0.5)
@@ -216,12 +231,12 @@ end
 function numslider_tbl:SetValue(value)
     value = math.Clamp(value, self:GetMin(), self:GetMax())
     
-    if self:GetValue() == value then return end
+    --if self:GetValue() == value then return end
     
     self.Slider:SetSlideX((value - self:GetMin()) / self:GetRange())
     
-    if self.TextArea != vgui.GetKeyboardFocus() then
-        self.TextArea:SetValue(tostring(value))
+    if self.TextArea ~= vgui.GetKeyboardFocus() then
+        self.TextArea:SetText(tostring(value))
     end
     
 	self:OnValueChanged(value)
@@ -264,8 +279,8 @@ function numslider_tbl:TranslateSliderValues(x, y)
     local value = x * self:GetRange() + self:GetMin()
     value = math.Round(value, self.decimals)
     
-    if self.TextArea != vgui.GetKeyboardFocus() then
-        self.TextArea:SetValue(tostring(value))
+    if self.TextArea ~= vgui.GetKeyboardFocus() then
+        self.TextArea:SetText(tostring(value))
     end
     
     self:OnValueChanged(value)
@@ -741,7 +756,7 @@ concommand.Add("gr_menu", function()
 			{color_black, Color(85,85,85,170), Color(130,130,130,150)},
 			{color_black, Color(65,65,40,150), Color(135,135,0,55)},
 			{Color(0,165,215), Color(60,45,90,130), Color(60,60,155,55)},
-			{Color(210,95,215), Color(10,190,190,50), Color(120,10,135,170)},
+			{Color(210,95,215), Color(10,190,190,50), Color(120,10,135,70)},
 		}
 		for i = 1, #themes do
 			local col_e = panel:Add(coltemplate_tbl)

@@ -1,7 +1,7 @@
 # GRadar
 *IMORTANT:*
 This addon requires Gram to work! You can get it here:
-https://github.com/Giguite/gram
+https://github.com/gigte/gram
 
 Type gr_menu in console to open the menu.
 
